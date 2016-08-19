@@ -1,11 +1,18 @@
+require 'remedy'
+include Remedy
+
 puts "Ruby REPL"
 
+user_input = Interaction.new
 # Handle the input, this would probably run some method
 # as a part of the DSL you'd have to create. Place this
 # repl as your command line interface to your service.
 def handle_input(input)
   result = eval(input)
   puts(" => #{result}")
+end
+
+def is_up_arrow?
 end
 
 # This is a lambda that runs the content of the block
