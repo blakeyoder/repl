@@ -1,6 +1,16 @@
-require 'io/console'
+require 'readline'
 
 puts "Ruby REPL"
+
+def readline_with_hist_management
+  line = Readline.readline('>>', true)
+  return nil if line.nil?
+  if line =~ /^\s*$/ or Readline::HISTORY.to_a[-2] == line
+    Readline::HISTORY.pop
+  end
+  line
+end
+
 
 # Handle the input, this would probably run some method
 # as a part of the DSL you'd have to create. Place this
@@ -21,29 +31,6 @@ end
 # again, this loops after every input and exits with
 # exit or a HUP.
 loop do
+  readline_with_hist_management
   repl[">> "]
-end
-
-# Reads keypresses from the user including 2 and 3 escape character sequences.
-def read_char
-
-  STDIN.echo = false
-  STDIN.raw!
-
-  input = STDIN.getc.chr
-  if input == "\e" then
-    input << STDIN.read_nonblock(3) rescue nil
-    input << STDIN.read_nonblock(2) rescue nil
-  end
-
-  ensure
-  STDIN.cooked!
-  
-  return input
-
-end
-
-def show_single_key
-  c = read_char
-  return c.inspect
 end
